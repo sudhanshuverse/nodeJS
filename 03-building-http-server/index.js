@@ -1,21 +1,46 @@
-// Create a server
-
 const http = require("http");
-const fs = require("fs")
+const { url } = require("inspector");
 
-const myServer = http.createServer((req, res) => {
-    const log = `${Date.now()}: ${req.url} New Request Received\n`
-    fs.appendFile('./03-building-http-server/log.txt', log, (err, data) => {
-        switch (req.url) {
-            case '/': res.end("Home Page");
-                break;
-            case '/about': res.end("I am sudhanshu")
-                break;
-            default:
-                res.end("404 Not Found");
+const server = http.createServer((req, res) => {
+    console.log("URL: ", req.url);
+    console.log("Methods: ", req.method);
+    console.log("Headers: ", req.headers);
+
+    switch (req.url) {
+        case "/": {
+            res.setHeader('Content-Type', 'text/html');
+            res.write('<html>');
+            res.write('<head><title>Home Page</title></head>');
+            res.write('<body><h1>Home Page</h1></body>');
+            res.write('</html>');
+            break;
         }
-    })
-});
+        case "/about": {
+            res.setHeader('Content-Type', 'text/html');
+            res.write('<html>');
+            res.write('<head><title>About Page</title></head>');
+            res.write('<body><h1>About Page</h1></body>');
+            res.write('</html>');
+            break;
+        }
+        case "/products": {
+            res.setHeader('Content-Type', 'text/html');
+            res.write('<html>');
+            res.write('<head><title>Products Page</title></head>');
+            res.write('<body><h1>Products Page</h1></body>');
+            res.write('</html>');
+            break;
+        }
+        default:
+            res.setHeader('Content-Type', 'text/html');
+            res.write('<html>');
+            res.write('<head><title>Default Page</title></head>');
+            res.write('<body><h1>Default Page</h1></body>');
+            res.write('</html>');
+            res.end();
+    }
+})
 
-
-myServer.listen(8000, () => console.log("Server Stated!"))
+server.listen(8000, () => {
+    console.log("Server Running...");
+})
